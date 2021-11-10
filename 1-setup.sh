@@ -192,14 +192,14 @@ fi
 echo -e "\nDone!\n"
 if ! source install.conf; then
 	read -p "Please enter username:" username
-echo "username=$username" >> ${HOME}/ArchTitus/install.conf
+echo "username=$username" >> ${HOME}/rei/install.conf
 fi
 if [ $(whoami) = "root"  ];
 then
     useradd -m -G wheel -s /bin/bash $username 
 	passwd $username
-	cp -R /root/ArchTitus /home/$username/
-    chown -R $username: /home/$username/ArchTitus
+	cp -R /root/rei /home/$username/
+    chown -R $username: /home/$username/rei
 	read -p "Please name your machine:" nameofmachine
 	echo $nameofmachine > /etc/hostname
 else
