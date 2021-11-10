@@ -14,7 +14,7 @@ echo -e "\nINSTALLING AUR SOFTWARE\n"
 echo "CLONING: PARU"
 cd ~
 git clone "https://aur.archlinux.org/paru.git"
-cd ${HOME}/yay
+cd ${HOME}/paru
 makepkg -si --noconfirm
 cd ~
 
