@@ -53,35 +53,35 @@ echo "--------------------------------------"
 
 # disk prep
 sgdisk -Z ${DISK} # zap all on disk
+#dd if=/dev/zero of=${DISK} bs=1M count=200 conv=fdatasync status=progress
 sgdisk -a 2048 -o ${DISK} # new gpt disk 2048 alignment
 
 # create partitions
-sgdisk -n 1::+100M --typecode=1:ef00 --change-name=1:'EFIBOOT' ${DISK} # partition 1 (UEFI Boot Partition)
-sgdisk -n 2::-0 --typecode=2:8300 --change-name=2:'ROOT' ${DISK} # partition 2 (Root), default start, remaining
-if [[ ! -d "/sys/firmware/efi" ]]; then
-    sgdisk -A 1:set:1 ${DISK}
-fi
+sgdisk -n 1:0:+1000M ${DISK} # partition 1 (UEFI SYS), default start block, 512MB
+sgdisk -n 2:0:0     ${DISK} # partition 2 (Root), default start, remaining
+
+# set partition types
+sgdisk -t 1:ef00 ${DISK}
+sgdisk -t 2:8300 ${DISK}
+
+# label partitions
+sgdisk -c 1:"UEFISYS" ${DISK}
+sgdisk -c 2:"ROOT" ${DISK}
 
 # make filesystems
 echo -e "\nCreating Filesystems...\n$HR"
 if [[ ${DISK} =~ "nvme" ]]; then
-mkfs.vfat -F32 -n "EFIBOOT" "${DISK}p1"
+mkfs.vfat -F32 -n "UEFISYS" "${DISK}p1"
 mkfs.btrfs -L "ROOT" "${DISK}p2" -f
 mount -t btrfs "${DISK}p2" /mnt
 else
-mkfs.vfat -F32 -n "EFIBOOT" "${DISK}1"
+mkfs.vfat -F32 -n "UEFISYS" "${DISK}1"
 mkfs.btrfs -L "ROOT" "${DISK}2" -f
 mount -t btrfs "${DISK}2" /mnt
 fi
 ls /mnt | xargs btrfs subvolume delete
 btrfs subvolume create /mnt/@
 umount /mnt
-;;
-*)
-echo "Rebooting in 3 Seconds ..." && sleep 1
-echo "Rebooting in 2 Seconds ..." && sleep 1
-echo "Rebooting in 1 Second ..." && sleep 1
-reboot now
 ;;
 esac
 
