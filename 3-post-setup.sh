@@ -29,7 +29,6 @@ echo -e "\nEnabling essential services"
 systemctl disable dhcpcd.service
 systemctl stop dhcpcd.service
 systemctl enable NetworkManager.service
-systemctl enable logmein-hamachi.service
 systemctl enable bluetooth
 echo "
 ###############################################################################
