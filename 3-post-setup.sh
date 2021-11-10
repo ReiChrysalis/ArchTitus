@@ -26,11 +26,10 @@ systemctl enable sddm.service
 
 echo -e "\nEnabling essential services"
 
-ntpd -qg
-systemctl enable ntpd.service
 systemctl disable dhcpcd.service
 systemctl stop dhcpcd.service
 systemctl enable NetworkManager.service
+systemctl enable logmein-hamachi.service
 systemctl enable bluetooth
 echo "
 ###############################################################################
