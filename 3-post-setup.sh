@@ -21,17 +21,11 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 echo -e "\nEnabling Login Display Manager"
 systemctl enable sddm.service
-echo -e "\nSetup SDDM Theme"
-cat <<EOF > /etc/sddm.conf
-[Theme]
-Current=Nordic
-EOF
 
 # ------------------------------------------------------------------------
 
 echo -e "\nEnabling essential services"
 
-systemctl enable cups.service
 ntpd -qg
 systemctl enable ntpd.service
 systemctl disable dhcpcd.service
