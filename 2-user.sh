@@ -17,6 +17,7 @@ git clone "https://aur.archlinux.org/paru.git"
 cd ${HOME}/paru
 makepkg -si --noconfirm
 cd ~
+touch "$HOME/.cache/zsh/history"
 
 PKGS=(
 'lightly-git'
@@ -48,7 +49,7 @@ PKGS=(
 )
 
 for PKG in "${PKGS[@]}"; do
-    yay -S --noconfirm $PKG
+    paru -S --noconfirm $PKG
 done
 
 export PATH=$PATH:~/.local/bin
