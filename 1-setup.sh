@@ -77,6 +77,8 @@ PKGS=(
 'breeze'
 'breeze-gtk'
 'btrfs-progs'
+'emacs'
+'flameshot'
 'mpv' # video players
 'discover'
 'dolphin'
